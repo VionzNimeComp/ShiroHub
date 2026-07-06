@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<%- include('layout/head', { title: 'Hasil Pencarian: ' + query }) %>
+<body>
+    <%- include('layout/navbar', { active: 'search', query: query }) %>
+    
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div class="flex items-center justify-between mb-4">
+            <h1 class="text-2xl font-bold text-white">Hasil Pencarian <span class="text-sm font-normal text-[#6b7a9a]">"<%= query %>"</span></h1>
+            <span class="text-sm text-[#6b7a9a]"><%= data.length %> anime ditemukan</span>
+        </div>
+        
+        <% if (data && data.length) { %>
+            <div class="anime-grid">
+                <% data.forEach(item => { %>
+                    <a href="/anime/<%= item.slug %>" class="card-hover rounded-xl overflow-hidden bg-[#141b2d] border border-[#1a2338] group">
+                        <div class="relative aspect-[2/3] overflow-hidden bg-[#0f1629]">
+                            <img src="<%= item.img %>" alt="<%= item.title %>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('img-fallback');this.parentElement.innerHTML='<span class=text-sm font-semibold>'+'<%= item.title %>'.slice(0,20)+'</span>';">
+                            <div class="absolute top-2 right-2 bg-black/60 px-2 py-1 rounded-lg text-xs font-bold text-white">⭐ <%= item.rating %></div>
+                        </div>
+                        <div class="p-3">
+                            <h3 class="text-sm font-semibold text-white line-clamp-2"><%= item.title %></h3>
+                            <div class="flex items-center gap-3 mt-1 text-xs text-[#6b7a9a]">
+                                <span>Eps <%= item.eps %></span>
+                                <span>•</span>
+                                <span><%= item.year || '-' %></span>
+                            </div>
+                        </div>
+                    </a>
+                <% }) %>
+            </div>
+        <% } else { %>
+            <div class="text-center py-16">
+                <div class="text-6xl mb-4">:(</div>
+                <h2 class="text-2xl font-bold text-white">Tidak Ditemukan</h2>
+                <p class="text-[#6b7a9a] mt-2">Anime dengan judul "<%= query %>" tidak ditemukan.</p>
+                <a href="/" class="inline-block mt-4 text-[#ec4899] hover:text-[#f472b6] font-semibold">← Kembali ke Beranda</a>
+            </div>
+        <% } %>
+    </main>
+    
+    <footer class="border-t border-[#1a2338] mt-10 py-6 text-center text-sm text-[#6b7a9a]">
+        © 2026 ShiroHub — streaming anime gratis
+    </footer>
+</body>
+</html>
