@@ -1,0 +1,109 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title ? title + ' | ShiroHub' : 'ShiroHub - Nonton Anime Sub Indo' %></title>
+    <meta name="description" content="ShiroHub - Nonton anime subtitle Indonesia gratis, streaming anime terbaru dengan kualitas HD.">
+    
+    <link rel="icon" href="/shiroicon.jpg">
+    <link rel="apple-touch-icon" href="/shiroicon.jpg">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'shiro-dark': '#0a0e1a',
+                        'shiro-card': '#141b2d',
+                        'shiro-border': '#1a2338',
+                        'shiro-pink': '#ec4899',
+                        'shiro-purple': '#8b5cf6',
+                        'shiro-blue': '#3b82f6',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: #0a0e1a;
+            color: #e8edf5;
+            min-height: 100vh;
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0e1a; }
+        ::-webkit-scrollbar-thumb { background: #ec4899; border-radius: 10px; }
+        
+        .card-hover {
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(236, 72, 153, 0.15);
+        }
+        
+        .anime-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+            gap: 20px;
+        }
+        @media (max-width: 640px) {
+            .anime-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 14px; }
+        }
+        
+        .eps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+        }
+        
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            background: #0a0e1a;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #1a2338;
+        }
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .badge-ongoing { background: #22c55e; }
+        .badge-completed { background: #6b7280; }
+        
+        .nav-active {
+            background: #ec4899;
+            color: #fff !important;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #ec4899, #8b5cf6);
+            transition: all 0.2s;
+        }
+        .btn-primary:hover {
+            transform: scale(0.97);
+            opacity: 0.9;
+        }
+        
+        .img-fallback {
+            background: linear-gradient(135deg, #1a2338, #0f1629);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4a5a7a;
+            font-weight: 600;
+            font-size: 14px;
+        }
+    </style>
+</head>
