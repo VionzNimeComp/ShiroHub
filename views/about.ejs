@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<%- include('layout/head', { title: 'Tentang ShiroHub' }) %>
+<body>
+    <%- include('layout/navbar', { active: 'about', query: null }) %>
+    
+    <main class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <h1 class="text-3xl font-extrabold text-white text-center mb-6">Tentang ShiroHub</h1>
+        
+        <div class="rounded-2xl bg-[#141b2d] border border-[#1a2338] p-8 space-y-6">
+            <div>
+                <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+                    <img src="/shiroicon.jpg" alt="ShiroHub" class="h-8 w-8 rounded-full">
+                    ShiroHub
+                </h2>
+                <p class="text-[#c8d0e0] mt-2 leading-relaxed">
+                    ShiroHub adalah platform streaming anime gratis yang terinspirasi dari 
+                    <strong class="text-[#ec4899]">Aplikasi Mobinime</strong>. Dibangun ulang dengan tampilan 
+                    lebih segar dan performa ringan.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-[#1a2338]">
+                <div>
+                    <h3 class="font-semibold text-white">Teknologi</h3>
+                    <ul class="text-sm text-[#8a9abb] space-y-1 mt-2">
+                        <li>• Node.js + Express</li>
+                        <li>• EJS (Server-Side Rendering)</li>
+                        <li>• Tailwind CSS</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-white">Fitur</h3>
+                    <ul class="text-sm text-[#8a9abb] space-y-1 mt-2">
+                        <li>• Streaming episode</li>
+                        <li>• Jadwal rilis</li>
+                        <li>• Pencarian anime</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="pt-4 border-t border-[#1a2338]">
+                <p class="text-sm text-[#6b7a9a]">
+                    Data anime diambil dari <strong class="text-[#ec4899]">ShiroNet API</strong>.
+                    <br>Dibuat untuk komunitas anime Indonesia.
+                </p>
+            </div>
+        </div>
+    </main>
+    
+    <footer class="border-t border-[#1a2338] mt-10 py-6 text-center text-sm text-[#6b7a9a]">
+        © 2026 ShiroHub — streaming anime gratis
+    </footer>
+</body>
+</html>
