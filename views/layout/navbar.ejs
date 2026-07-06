@@ -1,0 +1,31 @@
+<nav class="sticky top-0 z-50 bg-[#0a0e1a]/95 border-b border-[#1a2338]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16 gap-4 flex-wrap">
+            <a href="/" class="flex items-center gap-2">
+                <img src="/shiroicon.jpg" alt="ShiroHub" class="h-8 w-8 rounded-full">
+                <span class="text-xl font-extrabold bg-gradient-to-r from-[#ec4899] to-[#8b5cf6] bg-clip-text text-transparent">
+                    ShiroHub
+                </span>
+            </a>
+            
+            <div class="flex items-center gap-1 flex-wrap">
+                <a href="/" class="px-4 py-2 rounded-xl text-sm font-semibold transition-all <%= active === 'home' ? 'nav-active text-white' : 'text-[#8a9abb] hover:text-white hover:bg-[#1a2338]' %>">
+                    Beranda
+                </a>
+                <a href="/schedule" class="px-4 py-2 rounded-xl text-sm font-semibold transition-all <%= active === 'schedule' ? 'nav-active text-white' : 'text-[#8a9abb] hover:text-white hover:bg-[#1a2338]' %>">
+                    Jadwal
+                </a>
+                <a href="/about" class="px-4 py-2 rounded-xl text-sm font-semibold transition-all <%= active === 'about' ? 'nav-active text-white' : 'text-[#8a9abb] hover:text-white hover:bg-[#1a2338]' %>">
+                    Tentang
+                </a>
+            </div>
+            
+            <form action="/search" method="get" class="flex items-center gap-2 bg-[#141b2d] rounded-xl px-4 py-2 border border-[#1a2338] focus-within:border-[#ec4899] transition-all w-full sm:w-auto">
+                <input type="text" name="q" placeholder="Cari anime..." class="bg-transparent text-sm text-white placeholder-[#4a5a7a] outline-none w-full sm:w-48" value="<%= query || '' %>">
+                <button type="submit" class="btn-primary text-white text-sm font-bold px-4 py-1.5 rounded-lg">
+                    Cari
+                </button>
+            </form>
+        </div>
+    </div>
+</nav>
