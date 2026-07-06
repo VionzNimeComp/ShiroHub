@@ -5,58 +5,37 @@
     <%- include('layout/navbar', { active: 'search', query: query }) %>
     
     <main class="container-main py-6 max-w-2xl mx-auto">
-        <a href="/" class="inline-flex items-center gap-2 text-sm font-semibold text-[#ec4899] hover:text-[#f472b6] transition-colors mb-4">
-            <span>←</span> Kembali
+        <a href="/" class="inline-flex items-center gap-2 text-sm font-semibold text-[#ec4899] hover:text-[#f472b6] transition-colors mb-6">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Kembali
         </a>
 
-        <h1 class="text-2xl font-bold text-white mb-4">Cari Anime Di Sini</h1>
-
-        <div class="relative mb-4">
-            <input 
-                type="text" 
-                id="searchInput"
-                name="q"
-                value="<%= query || '' %>"
-                placeholder="Ketik judul anime..."
-                class="w-full bg-[#141b2d] rounded-2xl px-5 py-4 pr-12 border border-[#1a2338] focus:border-[#ec4899] transition-all text-white placeholder-[#4a5a7a] text-base outline-none"
-                autocomplete="off"
-            />
-            <span class="absolute right-4 top-1/2 -translate-y-1/2 text-[#6b7a9a]">🔍</span>
-        </div>
-
-        <div class="mb-6 select-none">
-            <div class="flex justify-center gap-1 mb-1">
-                <% 'qwertyuiop'.split('').forEach(char => { %>
-                    <button type="button" class="key-btn w-8 h-10 sm:w-10 sm:h-12 rounded-lg bg-[#1a2338] text-white text-sm font-semibold hover:bg-[#2a3348] transition-all active:scale-95" data-char="<%= char %>">
-                        <%= char %>
-                    </button>
-                <% }) %>
-            </div>
-            <div class="flex justify-center gap-1 mb-1">
-                <% 'asdfghjkl'.split('').forEach(char => { %>
-                    <button type="button" class="key-btn w-8 h-10 sm:w-10 sm:h-12 rounded-lg bg-[#1a2338] text-white text-sm font-semibold hover:bg-[#2a3348] transition-all active:scale-95" data-char="<%= char %>">
-                        <%= char %>
-                    </button>
-                <% }) %>
-            </div>
-            <div class="flex justify-center gap-1">
-                <% 'zxcvbnm'.split('').forEach(char => { %>
-                    <button type="button" class="key-btn w-8 h-10 sm:w-10 sm:h-12 rounded-lg bg-[#1a2338] text-white text-sm font-semibold hover:bg-[#2a3348] transition-all active:scale-95" data-char="<%= char %>">
-                        <%= char %>
-                    </button>
-                <% }) %>
-                <button type="button" id="backspaceBtn" class="w-12 h-10 sm:w-16 sm:h-12 rounded-lg bg-[#1a2338] text-white text-sm font-semibold hover:bg-[#2a3348] transition-all active:scale-95 flex items-center justify-center">
-                    ←
+        <div class="mb-8">
+            <form action="/search" method="get" class="relative">
+                <input 
+                    type="text" 
+                    name="q"
+                    value="<%= query %>"
+                    placeholder="Cari Anime Di Sini"
+                    class="w-full bg-[#141b2d] rounded-2xl px-5 py-4 pr-20 border border-[#1a2338] focus:border-[#ec4899] transition-all text-white placeholder-[#4a5a7a] text-base outline-none"
+                    autocomplete="off"
+                    autofocus
+                />
+                <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 btn-primary text-white font-bold px-5 py-2 rounded-xl text-sm">
+                    Cari
                 </button>
-            </div>
+            </form>
         </div>
 
-        <div id="searchResults">
-            <% if (query && data && data.length) { %>
-                <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-lg font-bold text-white">Hasil untuk "<%= query %>"</h2>
-                    <span class="text-sm text-[#6b7a9a]"><%= data.length %> ditemukan</span>
-                </div>
+        <% if (query && query.length > 0) { %>
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-bold text-white">Hasil untuk "<%= query %>"</h2>
+                <span class="text-sm text-[#6b7a9a]"><%= data.length %> ditemukan</span>
+            </div>
+
+            <% if (data && data.length) { %>
                 <div class="anime-grid">
                     <% data.forEach(item => { %>
                         <a href="/anime/<%= item.slug %>" class="anime-card">
@@ -75,68 +54,20 @@
                         </a>
                     <% }) %>
                 </div>
-            <% } else if (query) { %>
-                <div class="text-center py-10">
-                    <p class="text-[#6b7a9a]">Tidak ada anime dengan judul "<%= query %>"</p>
-                </div>
             <% } else { %>
-                <div class="text-center py-10 text-[#6b7a9a]">
-                    <p>Mulai ketik untuk mencari anime favoritmu</p>
+                <div class="text-center py-12">
+                    <p class="text-[#8a9abb]">Tidak ada anime yang cocok dengan "<%= query %>"</p>
                 </div>
             <% } %>
-        </div>
+        <% } else { %>
+            <div class="text-center py-12 text-[#6b7a9a]">
+                <p>Mulai ketik untuk mencari anime favoritmu</p>
+            </div>
+        <% } %>
     </main>
 
     <footer class="footer">
         © 2026 ShiroHub — streaming anime gratis
     </footer>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const searchInput = document.getElementById('searchInput');
-            const keyBtns = document.querySelectorAll('.key-btn');
-            const backspaceBtn = document.getElementById('backspaceBtn');
-            let debounceTimer;
-
-            function redirectSearch(query) {
-                if (query.trim().length === 0) {
-                    window.location.href = '/search';
-                    return;
-                }
-                window.location.href = '/search?q=' + encodeURIComponent(query.trim());
-            }
-
-            searchInput.addEventListener('input', function() {
-                const query = this.value;
-                clearTimeout(debounceTimer);
-                debounceTimer = setTimeout(function() {
-                    redirectSearch(query);
-                }, 300);
-            });
-
-            keyBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const char = this.getAttribute('data-char');
-                    const currentValue = searchInput.value;
-                    searchInput.value = currentValue + char;
-                    searchInput.dispatchEvent(new Event('input'));
-                });
-            });
-
-            backspaceBtn.addEventListener('click', function() {
-                const currentValue = searchInput.value;
-                searchInput.value = currentValue.slice(0, -1);
-                searchInput.dispatchEvent(new Event('input'));
-            });
-
-            searchInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    clearTimeout(debounceTimer);
-                    redirectSearch(this.value);
-                }
-            });
-        });
-    </script>
 </body>
 </html>
