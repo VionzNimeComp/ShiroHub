@@ -5,9 +5,9 @@
     <%- include('layout/navbar', { active: 'schedule', query: null }) %>
     
     <main class="container-main py-6 max-w-6xl mx-auto">
-        <h1 class="text-3xl font-extrabold text-white mb-6">Jadwal Tayang</h1>
+        <h1 class="text-2xl font-extrabold text-white mb-4">📅 Jadwal Tayang</h1>
         
-        <div class="space-y-4">
+        <div class="space-y-3">
             <% if (schedule && schedule.length) { %>
                 <% 
                     const dayMap = {
@@ -20,41 +20,49 @@
                         'Minggu': 'Min'
                     };
                 %>
-                <% schedule.forEach(day => { %>
-                    <div class="flex gap-6 border-b border-[#1a2338] pb-5 last:border-0">
-                        <!-- Kolom Hari -->
-                        <div class="w-14 flex-shrink-0 pt-1">
-                            <span class="text-xl font-bold text-[#ec4899]"><%= dayMap[day.day] || day.day.slice(0,3) %></span>
+                <% schedule.forEach((day) => { 
+                    const dayShort = dayMap[day.day] || day.day.slice(0,3);
+                    const total = day.list ? day.list.length : 0;
+                %>
+                    <div class="flex gap-4 border-b border-[#1a2338] pb-3 last:border-0">
+                        <div class="w-14 flex-shrink-0 pt-0.5">
+                            <div class="text-lg font-bold text-[#ec4899]"><%= dayShort %></div>
+                            <div class="text-xs text-[#6b7a9a]"><%= total %></div>
                         </div>
                         
-                        <div class="flex-1 space-y-4">
+                        <div class="flex-1 space-y-2.5">
                             <% if (day.list && day.list.length) { %>
                                 <% day.list.forEach(item => { 
                                     const isOngoing = item.status === 'Ongoing';
                                     const statusText = isOngoing ? '✅ Sudah Tayang' : '⏳ Menunggu Update Baru';
                                     const statusColor = isOngoing ? 'text-green-400' : 'text-yellow-400';
+                                    const shortTitle = item.title.length > 30 ? item.title.slice(0, 30) + '...' : item.title;
+                                    
+                                    const ratingRaw = item.rating || '0';
+                                    const ratingNum = parseFloat(ratingRaw.toString().replace(/[^0-9.]/g, ''));
+                                    const ratingVal = isNaN(ratingNum) ? 7.00 : ratingNum;
+                                    const ratingDisplay = ratingRaw.toString().includes('K') ? ratingRaw : ratingVal + 'K';
                                 %>
-                                    <a href="/anime/<%= item.slug %>" class="flex items-center gap-4 hover:bg-[#1a2338] rounded-xl p-2 transition-all group">
-                                        <!-- Thumbnail -->
-                                        <div class="w-16 h-24 flex-shrink-0 rounded-lg overflow-hidden bg-[#0f1629] border border-[#1a2338]">
+                                    <a href="/anime/<%= item.slug %>" class="flex items-center gap-3 hover:bg-[#1a2338] rounded-lg p-1.5 transition-all group">
+                                        <div class="w-10 h-14 flex-shrink-0 rounded-md overflow-hidden bg-[#0f1629] border border-[#1a2338]">
                                             <img 
                                                 src="<%= item.img %>" 
                                                 alt="<%= item.title %>" 
                                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
                                                 loading="lazy" 
-                                                onerror="this.style.display='none';this.parentElement.classList.add('img-fallback','text-[10px]');this.parentElement.innerHTML='<span>No Image</span>';"
+                                                onerror="this.style.display='none';this.parentElement.classList.add('img-fallback','text-[8px]');this.parentElement.innerHTML='<span>No img</span>';"
                                             >
                                         </div>
                                         
                                         <div class="flex-1 min-w-0">
-                                            <div class="text-base font-bold text-white group-hover:text-[#ec4899] transition-colors truncate">
-                                                <%= item.title %>
+                                            <div class="text-sm font-bold text-white group-hover:text-[#ec4899] transition-colors truncate max-w-[300px] sm:max-w-[400px]">
+                                                <%= shortTitle %>
                                             </div>
-                                            <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-[#8a9abb] mt-0.5">
-                                                <span>Episode <%= item.eps %></span>
-                                                <span>⭐ <%= item.rating %>K</span>
-                                                <span>⭐ <%= (parseFloat(item.rating) / 1.5).toFixed(2) || '7.00' %></span>
-                                                <span class="<%= statusColor %> font-medium">
+                                            <div class="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-xs text-[#8a9abb]">
+                                                <span>Eps <%= item.eps %></span>
+                                                <span>⭐ <%= ratingDisplay %></span>
+                                                <span>⭐ <%= ratingVal.toFixed(2) %></span>
+                                                <span class="<%= statusColor %> font-medium text-[11px]">
                                                     <%= statusText %>
                                                 </span>
                                             </div>
@@ -62,7 +70,7 @@
                                     </a>
                                 <% }) %>
                             <% } else { %>
-                                <div class="text-sm text-[#6b7a9a] italic py-2">Tidak ada rilis</div>
+                                <div class="text-xs text-[#6b7a9a] italic py-1">Tidak ada rilis</div>
                             <% } %>
                         </div>
                     </div>
