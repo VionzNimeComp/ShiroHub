@@ -3,7 +3,8 @@
 <%- include('layout/head', { title: 'Jadwal Tayang' }) %>
 <body>
     <%- include('layout/navbar', { active: 'schedule', query: null }) %>
-    <main class="container-main py-6 max-w-5xl mx-auto">
+    
+    <main class="container-main py-6 max-w-6xl mx-auto">
         <h1 class="text-3xl font-extrabold text-white mb-6">Jadwal Tayang</h1>
         
         <div class="space-y-4">
@@ -20,34 +21,48 @@
                     };
                 %>
                 <% schedule.forEach(day => { %>
-                    <div class="flex gap-6 border-b border-[#1a2338] pb-4 last:border-0">
-                        <div class="w-16 flex-shrink-0">
+                    <div class="flex gap-6 border-b border-[#1a2338] pb-5 last:border-0">
+                        <!-- Kolom Hari -->
+                        <div class="w-14 flex-shrink-0 pt-1">
                             <span class="text-xl font-bold text-[#ec4899]"><%= dayMap[day.day] || day.day.slice(0,3) %></span>
                         </div>
                         
-                        <div class="flex-1 space-y-3">
+                        <div class="flex-1 space-y-4">
                             <% if (day.list && day.list.length) { %>
                                 <% day.list.forEach(item => { 
-                                    const status = item.status === 'Ongoing' ? 'Sudah Tayang' : 'Menunggu Update Baru';
                                     const isOngoing = item.status === 'Ongoing';
+                                    const statusText = isOngoing ? '✅ Sudah Tayang' : '⏳ Menunggu Update Baru';
+                                    const statusColor = isOngoing ? 'text-green-400' : 'text-yellow-400';
                                 %>
-                                    <div class="flex flex-col">
-                                        <!-- Judul -->
-                                        <a href="/anime/<%= item.slug %>" class="text-base font-bold text-white hover:text-[#ec4899] transition-colors">
-                                            <%= item.title %>
-                                        </a>
-                                        <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-[#8a9abb] mt-0.5">
-                                            <span>Episode <%= item.eps %></span>
-                                            <span>⭐ <%= item.rating %>K</span>
-                                            <span>⭐ <%= (parseFloat(item.rating) / 1.5).toFixed(2) || '7.00' %></span>
-                                            <span class="<%= isOngoing ? 'text-green-400' : 'text-yellow-400' %> font-medium">
-                                                <%= isOngoing ? '✅ Sudah Tayang' : '⏳ Menunggu Update Baru' %>
-                                            </span>
+                                    <a href="/anime/<%= item.slug %>" class="flex items-center gap-4 hover:bg-[#1a2338] rounded-xl p-2 transition-all group">
+                                        <!-- Thumbnail -->
+                                        <div class="w-16 h-24 flex-shrink-0 rounded-lg overflow-hidden bg-[#0f1629] border border-[#1a2338]">
+                                            <img 
+                                                src="<%= item.img %>" 
+                                                alt="<%= item.title %>" 
+                                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
+                                                loading="lazy" 
+                                                onerror="this.style.display='none';this.parentElement.classList.add('img-fallback','text-[10px]');this.parentElement.innerHTML='<span>No Image</span>';"
+                                            >
                                         </div>
-                                    </div>
+                                        
+                                        <div class="flex-1 min-w-0">
+                                            <div class="text-base font-bold text-white group-hover:text-[#ec4899] transition-colors truncate">
+                                                <%= item.title %>
+                                            </div>
+                                            <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-[#8a9abb] mt-0.5">
+                                                <span>Episode <%= item.eps %></span>
+                                                <span>⭐ <%= item.rating %>K</span>
+                                                <span>⭐ <%= (parseFloat(item.rating) / 1.5).toFixed(2) || '7.00' %></span>
+                                                <span class="<%= statusColor %> font-medium">
+                                                    <%= statusText %>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </a>
                                 <% }) %>
                             <% } else { %>
-                                <div class="text-sm text-[#6b7a9a] italic">Tidak ada rilis</div>
+                                <div class="text-sm text-[#6b7a9a] italic py-2">Tidak ada rilis</div>
                             <% } %>
                         </div>
                     </div>
