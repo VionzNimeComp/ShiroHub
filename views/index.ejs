@@ -38,11 +38,6 @@
                             <div class="thumb-wrap">
                                 <img src="<%= item.img %>" alt="<%= item.title %>" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('img-fallback');this.parentElement.innerHTML='<span>'+'<%= item.title %>'.slice(0,20)+'</span>';">
                                 <div class="absolute top-2 right-2 bg-black/70 px-2 py-0.5 rounded-lg text-xs font-bold text-white">⭐ <%= item.rating %></div>
-                                <% if (item.status === 'Ongoing') { %>
-                                    <span class="absolute bottom-2 left-2 text-xs font-bold px-2 py-0.5 rounded-lg badge-ongoing text-white">Ongoing</span>
-                                <% } else if (item.status === 'Completed') { %>
-                                    <span class="absolute bottom-2 left-2 text-xs font-bold px-2 py-0.5 rounded-lg badge-completed text-white">Completed</span>
-                                <% } %>
                             </div>
                             <div class="info">
                                 <h3><%= item.title %></h3>
