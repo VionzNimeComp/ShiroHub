@@ -1,86 +1,155 @@
 <!DOCTYPE html>
 <html lang="id" class="dark">
-<%- include('layout/head', { title: 'Jadwal Tayang' }) %>
+<%- include('layout/head', { title: 'Jadwal' }) %>
 <body>
     <%- include('layout/navbar', { active: 'schedule', query: null }) %>
     
     <main class="container-main py-6 max-w-6xl mx-auto">
-        <h1 class="text-2xl font-extrabold text-white mb-4">Jadwal Tayang</h1>
-        
-        <div class="space-y-3">
-            <% if (schedule && schedule.length) { %>
-                <% 
-                    const dayMap = {
-                        'Senin': 'Sen',
-                        'Selasa': 'Sel',
-                        'Rabu': 'Rab',
-                        'Kamis': 'Kam',
-                        'Jumat': 'Jum',
-                        'Sabtu': 'Sab',
-                        'Minggu': 'Min'
-                    };
-                %>
-                <% schedule.forEach((day) => { 
-                    const dayShort = dayMap[day.day] || day.day.slice(0,3);
-                    const total = day.list ? day.list.length : 0;
-                %>
-                    <div class="flex gap-4 border-b border-[#1a2338] pb-3 last:border-0">
-                        <div class="w-14 flex-shrink-0 pt-0.5">
-                            <div class="text-lg font-bold text-[#ec4899]"><%= dayShort %></div>
-                            <div class="text-xs text-[#6b7a9a]"><%= total %></div>
+        <h1 class="text-2xl font-extrabold text-white mb-4">Jadwal Update</h1>
+
+        <div class="flex flex-wrap gap-2 mb-6 border-b border-[#1a2338] pb-4">
+            <% 
+                const dayList = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
+                const dayMap = {
+                    'Senin': 'Sen',
+                    'Selasa': 'Sel',
+                    'Rabu': 'Rab',
+                    'Kamis': 'Kam',
+                    'Jumat': 'Jum',
+                    'Sabtu': 'Sab',
+                    'Minggu': 'Min'
+                };
+            %>
+            <% dayList.forEach(day => { %>
+                <button class="tab-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all bg-[#141b2d] border border-[#1a2338] text-[#8a9abb] hover:text-white hover:border-[#ec4899]" data-day="<%= day %>">
+                    <%= dayMap[day] %>
+                </button>
+            <% }) %>
+            <button class="tab-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all bg-[#141b2d] border border-[#1a2338] text-[#8a9abb] hover:text-white hover:border-[#ec4899]" data-day="acak">
+                Acak
+            </button>
+        </div>
+
+        <div id="schedule-content">
+            <% dayList.forEach(day => { 
+                const dayData = schedule.find(s => s.day === day);
+                const items = dayData ? dayData.list : [];
+            %>
+                <div class="day-content hidden" data-day="<%= day %>">
+                    <h2 class="text-xl font-bold text-[#ec4899] mb-4"><%= day %></h2>
+                    <% if (items.length) { %>
+                        <div class="anime-grid">
+                            <% items.forEach(item => { 
+                                const statusText = item.status === 'Ongoing' ? 'Sudah Tayang' : 'Belum Tayang';
+                                const statusColor = item.status === 'Ongoing' ? 'text-green-400' : 'text-yellow-400';
+                            %>
+                                <a href="/anime/<%= item.slug %>" class="anime-card">
+                                    <div class="thumb-wrap">
+                                        <img src="<%= item.img %>" alt="<%= item.title %>" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('img-fallback');this.parentElement.innerHTML='<span>'+'<%= item.title %>'.slice(0,15)+'</span>';">
+                                    </div>
+                                    <div class="info">
+                                        <h3 class="text-sm font-bold text-white line-clamp-2"><%= item.title %></h3>
+                                        <span class="text-xs font-medium <%= statusColor %>"><%= statusText %></span>
+                                    </div>
+                                </a>
+                            <% }) %>
                         </div>
-                        
-                        <div class="flex-1 space-y-2.5">
-                            <% if (day.list && day.list.length) { %>
-                                <% day.list.forEach(item => { 
-                                    const isOngoing = item.status === 'Ongoing';
-                                    const statusText = isOngoing ? '✅ Sudah Tayang' : '⏳ Menunggu Update Baru';
-                                    const statusColor = isOngoing ? 'text-green-400' : 'text-yellow-400';
-                                    const shortTitle = item.title.length > 30 ? item.title.slice(0, 30) + '...' : item.title;
-                                    
-                                    const ratingRaw = item.rating || '0';
-                                    const ratingNum = parseFloat(ratingRaw.toString().replace(/[^0-9.]/g, ''));
-                                    const ratingDisplay = isNaN(ratingNum) ? '-' : ratingNum.toFixed(1);
-                                %>
-                                    <a href="/anime/<%= item.slug %>" class="flex items-center gap-3 hover:bg-[#1a2338] rounded-lg p-1.5 transition-all group">
-                                        <div class="w-10 h-14 flex-shrink-0 rounded-md overflow-hidden bg-[#0f1629] border border-[#1a2338]">
-                                            <img 
-                                                src="<%= item.img %>" 
-                                                alt="<%= item.title %>" 
-                                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
-                                                loading="lazy" 
-                                                onerror="this.style.display='none';this.parentElement.classList.add('img-fallback','text-[8px]');this.parentElement.innerHTML='<span>No img</span>';"
-                                            >
-                                        </div>
-                                        
-                                        <div class="flex-1 min-w-0">
-                                            <div class="text-sm font-bold text-white group-hover:text-[#ec4899] transition-colors truncate max-w-[300px] sm:max-w-[400px]">
-                                                <%= shortTitle %>
-                                            </div>
-                                            <div class="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-xs text-[#8a9abb]">
-                                                <span>Eps <%= item.eps %></span>
-                                                <span>⭐ <%= ratingDisplay %></span>
-                                                <span class="<%= statusColor %> font-medium text-[11px]">
-                                                    <%= statusText %>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                <% }) %>
-                            <% } else { %>
-                                <div class="text-xs text-[#6b7a9a] italic py-1">Tidak ada rilis</div>
-                            <% } %>
-                        </div>
-                    </div>
-                <% }) %>
-            <% } else { %>
-                <div class="text-center py-10 text-[#6b7a9a]">Belum ada jadwal.</div>
-            <% } %>
+                    <% } else { %>
+                        <p class="text-[#6b7a9a]">Tidak ada anime tayang hari ini.</p>
+                    <% } %>
+                </div>
+            <% }) %>
+
+            <div class="day-content hidden" data-day="acak">
+                <h2 class="text-xl font-bold text-[#ec4899] mb-4">🎲 Anime Acak</h2>
+                <div id="random-anime" class="flex flex-wrap gap-4">
+                    <p class="text-[#6b7a9a]">Klik tombol Acak di atas untuk menampilkan anime random.</p>
+                </div>
+            </div>
         </div>
     </main>
 
     <footer class="footer">
         © 2026 ShiroHub — streaming anime gratis
     </footer>
+
+    <%- include('layout/bottom-nav', { active: 'schedule' }) %>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const allAnime = [];
+            <% schedule.forEach(day => { %>
+                <% day.list.forEach(item => { %>
+                    allAnime.push({
+                        title: '<%= item.title.replace(/'/g, "\\'") %>',
+                        slug: '<%= item.slug %>',
+                        img: '<%= item.img %>',
+                        status: '<%= item.status === "Ongoing" ? "Sudah Tayang" : "Belum Tayang" %>',
+                        statusColor: '<%= item.status === "Ongoing" ? "text-green-400" : "text-yellow-400" %>'
+                    });
+                <% }) %>
+            <% }) %>
+
+            const tabs = document.querySelectorAll('.tab-btn');
+            const contents = document.querySelectorAll('.day-content');
+            const randomContainer = document.getElementById('random-anime');
+
+            function switchTab(day) {
+                contents.forEach(c => c.classList.add('hidden'));
+                
+                const target = document.querySelector(`.day-content[data-day="${day}"]`);
+                if (target) target.classList.remove('hidden');
+
+                if (day === 'acak') {
+                    showRandomAnime();
+                }
+
+                tabs.forEach(t => {
+                    t.classList.remove('bg-[#ec4899]', 'text-white', 'border-[#ec4899]');
+                    t.classList.add('bg-[#141b2d]', 'text-[#8a9abb]', 'border-[#1a2338]');
+                });
+                const activeTab = document.querySelector(`.tab-btn[data-day="${day}"]`);
+                if (activeTab) {
+                    activeTab.classList.remove('bg-[#141b2d]', 'text-[#8a9abb]', 'border-[#1a2338]');
+                    activeTab.classList.add('bg-[#ec4899]', 'text-white', 'border-[#ec4899]');
+                }
+            }
+
+            function showRandomAnime() {
+                if (allAnime.length === 0) {
+                    randomContainer.innerHTML = '<p class="text-[#6b7a9a]">Belum ada anime.</p>';
+                    return;
+                }
+                const randomIndex = Math.floor(Math.random() * allAnime.length);
+                const anime = allAnime[randomIndex];
+                randomContainer.innerHTML = `
+                    <a href="/anime/${anime.slug}" class="anime-card max-w-[200px]">
+                        <div class="thumb-wrap">
+                            <img src="${anime.img}" alt="${anime.title}" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('img-fallback');this.parentElement.innerHTML='<span>'+'${anime.title}'.slice(0,15)+'</span>';">
+                        </div>
+                        <div class="info">
+                            <h3 class="text-sm font-bold text-white line-clamp-2">${anime.title}</h3>
+                            <span class="text-xs font-medium ${anime.statusColor}">${anime.status}</span>
+                        </div>
+                    </a>
+                `;
+            }
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const day = this.dataset.day;
+                    switchTab(day);
+                });
+            });
+
+            const firstDay = document.querySelector('.tab-btn[data-day="Senin"]');
+            if (firstDay) {
+                firstDay.click();
+            } else {
+                const acakBtn = document.querySelector('.tab-btn[data-day="acak"]');
+                if (acakBtn) acakBtn.click();
+            }
+        });
+    </script>
 </body>
 </html>
