@@ -1,0 +1,27 @@
+<!-- Bottom Navigation -->
+<nav class="fixed bottom-0 left-0 right-0 z-50 bg-[#0a0e1a]/95 border-t border-[#1a2338]">
+    <div class="max-w-7xl mx-auto px-2">
+        <div class="flex items-center justify-around h-16">
+            <a href="/" class="flex flex-col items-center justify-center gap-0.5 text-xs <%= active === 'home' ? 'text-[#ec4899]' : 'text-[#6b7a9a] hover:text-white' %>">
+                <i class="fas fa-home text-xl"></i>
+                <span>Beranda</span>
+            </a>
+            <a href="/schedule" class="flex flex-col items-center justify-center gap-0.5 text-xs <%= active === 'schedule' ? 'text-[#ec4899]' : 'text-[#6b7a9a] hover:text-white' %>">
+                <i class="fas fa-calendar-alt text-xl"></i>
+                <span>Jadwal</span>
+            </a>
+            <a href="/search" class="flex flex-col items-center justify-center gap-0.5 text-xs <%= active === 'search' ? 'text-[#ec4899]' : 'text-[#6b7a9a] hover:text-white' %>">
+                <i class="fas fa-search text-xl"></i>
+                <span>Cari</span>
+            </a>
+            <a href="/about" class="flex flex-col items-center justify-center gap-0.5 text-xs <%= active === 'about' ? 'text-[#ec4899]' : 'text-[#6b7a9a] hover:text-white' %>">
+                <i class="fas fa-info-circle text-xl"></i>
+                <span>Tentang</span>
+            </a>
+            <a href="https://t.me/shirohub_bot" target="_blank" class="flex flex-col items-center justify-center gap-0.5 text-xs text-[#6b7a9a] hover:text-[#ec4899] transition-colors">
+                <i class="fas fa-bug text-xl"></i>
+                <span>Lapor</span>
+            </a>
+        </div>
+    </div>
+</nav>
